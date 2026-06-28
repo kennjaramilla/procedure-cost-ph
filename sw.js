@@ -26,5 +26,12 @@ self.addEventListener("fetch", e => {
     );
     return;
   }
-  e.respondWith(caches.match(req).then(hit => hit || fetch(req)));
+  // cache-first for static assets + fonts; runtime-cache new successful GETs (offline support)
+  e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => {
+    if (res && res.ok && req.url.startsWith("http")) {
+      const copy = res.clone();
+      caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+    }
+    return res;
+  }).catch(() => hit)));
 });
