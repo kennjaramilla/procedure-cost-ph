@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F766E">
+<meta name="description" content="Free guide: roughly how much money to prepare for hospital procedures in the Philippines, with PhilHealth coverage and where to get help paying. Estimates only.">
+<title>Magkano? — Prepare for hospital costs (PH)</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+  :root{
+    --bg:#F1F5F4; --card:#FFFFFF; --ink:#13302B; --muted:#5C6B67;
+    --teal:#0F766E; --teal-d:#0B5D56; --teal-soft:#E2F1EE;
+    --coral:#C5543B; --coral-soft:#FBEAE5;
+    --line:#E3E9E7; --gold:#B7791F; --good:#2F7D55;
+    --shadow:0 6px 22px rgba(19,48,43,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  body{padding-bottom:env(safe-area-inset-bottom)}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  .bic{fill:currentColor;display:inline-block;vertical-align:-.15em;flex:none}
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px 90px}
+
+  header{position:sticky;top:0;z-index:20;background:var(--teal);color:#fff;
+    padding:calc(env(safe-area-inset-top) + 14px) 16px 14px;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+  .hbar{max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .brand{display:flex;align-items:center;gap:9px;min-width:0}
+  .brand .logo{width:30px;height:30px;border-radius:8px;background:#fff;color:var(--teal);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex:none}
+  .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.2px;white-space:nowrap}
+  .brand p{margin:1px 0 0;font-size:11.5px;color:#CFEAE5;font-weight:500}
+  .lang{display:flex;background:rgba(255,255,255,.16);border-radius:999px;padding:3px;flex:none}
+  .lang button{color:#DCEFEB;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px}
+  .lang button.on{background:#fff;color:var(--teal)}
+
+  .note{background:#FFF7E6;border:1px solid #F0DCA8;color:#6B581F;border-radius:12px;
+    padding:10px 13px;font-size:12px;line-height:1.5;margin:14px 0 6px;display:flex;gap:8px}
+  .note b{color:#5A4914}
+
+  h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);
+    font-weight:700;margin:22px 4px 10px}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 14px;
+    text-align:left;box-shadow:var(--shadow);transition:transform .08s, box-shadow .12s;min-height:104px;
+    display:flex;flex-direction:column;justify-content:space-between}
+  .card:active{transform:scale(.97)}
+  .card .emo{font-size:26px;line-height:1}
+  .card .nm{display:block;font-size:15px;font-weight:700;margin-top:9px;line-height:1.2}
+  .card .also{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+
+  .help-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}
+  .help{border-radius:16px;padding:15px 14px;text-align:left;font-weight:700;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;gap:6px;color:#fff;min-height:92px;justify-content:center}
+  .help .emo{font-size:24px}
+  .help .t{font-size:15px;line-height:1.2}
+  .help .s{font-size:11.5px;font-weight:500;opacity:.92}
+  .help.aid{background:linear-gradient(135deg,#C5543B,#A8412B)}
+  .help.phil{background:linear-gradient(135deg,#0F766E,#0B5D56)}
+
+  footer{max-width:560px;margin:26px auto 0;padding:0 4px;color:var(--muted);font-size:11px;line-height:1.6;text-align:center}
+
+  /* sheet */
+  .scrim{position:fixed;inset:0;background:rgba(15,40,36,.45);opacity:0;pointer-events:none;
+    transition:opacity .2s;z-index:40}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bg);
+    border-radius:20px 20px 0 0;max-width:560px;margin:0 auto;max-height:92vh;overflow-y:auto;
+    transform:translateY(102%);transition:transform .26s cubic-bezier(.22,1,.36,1);
+    padding:8px 16px calc(env(safe-area-inset-bottom) + 22px);box-shadow:0 -8px 40px rgba(0,0,0,.22)}
+  .sheet.show{transform:translateY(0)}
+  .grab{width:42px;height:5px;border-radius:3px;background:#CBD6D3;margin:8px auto 6px}
+  .sheet-head{display:flex;align-items:center;gap:11px;margin:4px 2px 4px}
+  .sheet-head .emo{font-size:30px}
+  .sheet-head h3{margin:0;font-size:20px;font-weight:800}
+  .sheet-head .x{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#fff;
+    border:1px solid var(--line);font-size:18px;color:var(--muted);flex:none}
+
+  .big{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:12px;box-shadow:var(--shadow)}
+  .big .lbl{font-size:12.5px;color:var(--muted);font-weight:600}
+  .big .amt{font-size:30px;font-weight:800;color:var(--teal-d);letter-spacing:-.5px;margin-top:2px;line-height:1.1}
+  .big .eur{font-size:12.5px;color:var(--muted);margin-top:3px}
+
+  .toggle{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:12px 14px;margin-top:11px}
+  .toggle .tx{font-size:13.5px;font-weight:600;flex:1}
+  .sw{width:46px;height:27px;border-radius:999px;background:#D5DEDB;position:relative;flex:none;transition:.18s}
+  .sw.on{background:var(--teal)}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;
+    background:#fff;transition:.18s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .sw.on::after{left:22px}
+
+  .lines{background:#fff;border:1px solid var(--line);border-radius:16px;margin-top:11px;overflow:hidden}
+  .li{padding:13px 15px;border-top:1px solid var(--line);display:flex;gap:11px;font-size:13.5px;line-height:1.45}
+  .li:first-child{border-top:none}
+  .li .ic{flex:none;font-size:16px;width:20px;text-align:center}
+  .li b{color:var(--teal-d)}
+  .li.outpay b{color:var(--coral)}
+
+  details.qa{background:#fff;border:1px solid var(--line);border-radius:14px;margin-top:11px;overflow:hidden}
+  details.qa summary{padding:14px 15px;font-weight:700;font-size:14px;list-style:none;display:flex;align-items:center;gap:9px}
+  details.qa summary::-webkit-details-marker{display:none}
+  details.qa summary .chev{margin-left:auto;transition:.2s;color:var(--muted)}
+  details.qa[open] summary .chev{transform:rotate(180deg)}
+  details.qa .body{padding:0 15px 14px}
+  details.qa .body p{margin:8px 0;font-size:13px;line-height:1.5;color:var(--ink);padding-left:18px;position:relative}
+  details.qa .body p::before{content:"›";position:absolute;left:2px;color:var(--teal);font-weight:800}
+
+  .aid-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:11px;box-shadow:var(--shadow)}
+  .aid-card h4{margin:0 0 4px;font-size:15px;font-weight:800;color:var(--coral)}
+  .aid-card .what{font-size:13px;line-height:1.45;color:var(--ink)}
+  .aid-card .how{font-size:12.5px;line-height:1.45;color:var(--muted);margin-top:6px}
+  .aid-card a{color:var(--teal-d);font-weight:700;text-decoration:none;font-size:12.5px}
+
+  .disc{font-size:11.5px;color:var(--muted);line-height:1.55;margin-top:14px;padding:0 2px;text-align:center}
+  .reviewed{font-size:11px;color:var(--muted);text-align:center;margin-top:10px}
+  .soon{font-size:12.5px;color:var(--muted);text-align:center;padding:14px;background:#fff;border:1px dashed var(--line);border-radius:14px;margin-top:11px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <div class="brand">
+      <div class="logo">₱</div>
+      <div>
+        <h1 id="appName">Magkano?</h1>
+        <p id="tagline">Prepare for hospital costs · Philippines</p>
+      </div>
+    </div>
+    <div class="lang">
+      <button id="lang-en" class="on" onclick="setLang('en')">EN</button>
+      <button id="lang-tl" onclick="setLang('tl')">TL</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="note">
+    <svg class="bic" style="width:15px;height:15px;margin-top:1px" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg>
+    <span id="topNote"><b>Estimates only.</b> Real prices change and vary by hospital — always call to confirm. This is free info, not medical advice.</span>
+  </div>
+
+  <h2 class="sec" id="secProc">Pick a procedure</h2>
+  <div class="grid" id="procGrid"></div>
+  <div class="soon" id="soonNote">More procedures coming soon.</div>
+
+  <h2 class="sec" id="secHelp">Need help?</h2>
+  <div class="help-row">
+    <button class="help aid" onclick="openAid()">
+      <span class="emo"><svg class="bic" style="width:24px;height:24px" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/><path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/><path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/><path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/></svg></span>
+      <span class="t" id="aidT">Help paying</span>
+      <span class="s" id="aidS">Free gov't assistance</span>
+    </button>
+    <button class="help phil" onclick="openPhil()">
+      <span class="emo"><svg class="bic" style="width:24px;height:24px" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/><path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/></svg></span>
+      <span class="t" id="philT">PhilHealth</span>
+      <span class="s" id="philS">Are you covered?</span>
+    </button>
+  </div>
+
+  <p class="reviewed" id="reviewedTxt">Last reviewed: Jun 2026</p>
+  <footer id="footerTxt">Made to help — free, no sign-up, nothing saved. ❤️</footer>
+</div>
+
+<div class="scrim" id="scrim" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="grab"></div>
+  <div id="sheetContent"></div>
+</div>
+
+<script>
+/* ============================================================
+   DATA  (only VERIFIED figures shipped; more added as confirmed)
+   PHP. PhilHealth case rates from official circulars (2025).
+   ============================================================ */
+const FX = 63; // PHP per EUR, approx
+const REVIEWED = "Jun 2026";
+
+/* Bootstrap Icons (MIT) — inlined as SVG paths, no external dependency */
+const ICONS = {
+  x:'<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>',
+  chevron:'<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>',
+  cash:'<path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/><path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/><path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/><path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>',
+  shield:'<path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/><path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>',
+  hospital:'<path d="M8.5 5.034v1.1l.953-.55.5.867L9 7l.953.55-.5.866-.953-.55v1.1h-1v-1.1l-.953.55-.5-.866L7 7l-.953-.55.5-.866.953.55v-1.1zM13.25 9a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-.5a.25.25 0 0 0-.25-.25zM13 11.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25zm.25 1.75a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-.5a.25.25 0 0 0-.25-.25zm-11-4a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5A.25.25 0 0 0 3 9.75v-.5A.25.25 0 0 0 2.75 9zm0 2a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-.5a.25.25 0 0 0-.25-.25zM2 13.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25z"/><path d="M5 1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1zm2 14h2v-3H7zm3 0h1V3H5v12h1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1zm0-14H6v1h4zm2 7v7h3V8zm-8 7V8H1v7z"/>',
+  warning:'<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/><path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>',
+  chat:'<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/><path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>',
+  bag:'<path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>',
+  geo:'<path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/><path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>'
+};
+function ic(name, px){ const s=px||16; return '<svg class="bic" style="width:'+s+'px;height:'+s+'px" viewBox="0 0 16 16" aria-hidden="true">'+(ICONS[name]||'')+'</svg>'; }
+
+const PROCEDURES = [
+  {
+    id:"endo_colo", emo:"🔬",
+    name:{en:"Endoscopy + Colonoscopy", tl:"Endoscopy + Colonoscopy"},
+    also:{en:"Camera test · stomach & colon", tl:"Camera test · tiyan at bituka"},
+    priv:[40000,55000], gov:[1500,6000], philhealth:23634, conf:"good",
+    excl:{en:"Biopsy, sedation/anesthesia & pre-op labs are often added.",
+          tl:"Biopsy, sedation/anesthesia at pre-op labs ay madalas dagdag-bayad."}
+  },
+  {
+    id:"nsd", emo:"🤱",
+    name:{en:"Childbirth — Normal", tl:"Panganganak — Normal"},
+    also:{en:"Vaginal delivery", tl:"Normal na panganganak"},
+    priv:[30000,70000], gov:[5000,20000], philhealth:29000, conf:"good",
+    excl:{en:"Epidural, newborn screening/vaccines, or a longer stay cost extra.",
+          tl:"Dagdag-bayad ang epidural, newborn screening/bakuna, o mas mahabang stay."}
+  },
+  {
+    id:"cs", emo:"👶",
+    name:{en:"Childbirth — Cesarean (CS)", tl:"Panganganak — Cesarean (CS)"},
+    also:{en:"CS operation", tl:"Operasyon (CS)"},
+    priv:[60000,150000], gov:[20000,60000], philhealth:58000, conf:"good",
+    excl:{en:"Anesthesia is included; NICU, complications & premium rooms cost extra (premium MM hospitals can reach ₱300k).",
+          tl:"Kasama ang anesthesia; dagdag ang NICU, komplikasyon at premium room (sa premium MM hospitals umaabot ng ₱300k)."}
+  },
+  {
+    id:"dialysis", emo:"🩸",
+    name:{en:"Hemodialysis", tl:"Hemodialysis"},
+    also:{en:"Per session", tl:"Kada session"},
+    priv:[2500,5000], gov:[0,2000], philhealth:null, conf:"good",
+    phNote:{en:"PhilHealth covers ₱6,350/session — this range is the usual leftover (meds/labs) at accredited centers.",
+            tl:"Sinasagot ng PhilHealth ang ₱6,350/session — ito ang karaniwang natitira (gamot/labs) sa accredited centers."},
+    excl:{en:"EPO, iron, extra labs, and vascular-access surgery are separate.",
+          tl:"Hiwalay ang EPO, iron, dagdag na labs, at vascular-access surgery."}
+  },
+  {
+    id:"cataract", emo:"👁️",
+    name:{en:"Cataract Surgery", tl:"Cataract Surgery"},
+    also:{en:"Per eye", tl:"Bawat mata"},
+    priv:[30000,60000], gov:[15000,30000], philhealth:28300, conf:"good",
+    excl:{en:"Premium-lens upgrade, pre-op labs, post-op meds, and the 2nd eye are separate.",
+          tl:"Hiwalay ang premium-lens upgrade, pre-op labs, post-op gamot, at ang ikalawang mata."}
+  },
+  {
+    id:"appendectomy", emo:"🩹",
+    name:{en:"Appendix Removal", tl:"Pagtanggal ng Apendiks"},
+    also:{en:"Appendectomy", tl:"Appendectomy"},
+    priv:[35000,65000], gov:[15000,40000], philhealth:46800, conf:"good",
+    excl:{en:"Anesthesiologist fee, meds & labs are extra; laparoscopic costs more (₱60k–₱155k).",
+          tl:"Dagdag ang anesthesiologist fee, gamot at labs; mas mahal ang laparoscopic (₱60k–₱155k)."}
+  },
+  {
+    id:"ct", emo:"🧠",
+    name:{en:"CT Scan", tl:"CT Scan"},
+    also:{en:"Varies by body part", tl:"Depende sa bahagi"},
+    priv:[4000,15000], gov:[2000,8000], philhealth:null, conf:"med",
+    phNote:{en:"No PhilHealth for outpatient scans — covered only if you're admitted.",
+            tl:"Walang PhilHealth sa outpatient scan — covered lang kung naka-admit."},
+    excl:{en:"Contrast dye, the radiologist's reading fee, and prep labs are extra.",
+          tl:"Dagdag ang contrast dye, reading fee ng radiologist, at prep labs."}
+  },
+  {
+    id:"mri", emo:"🧲",
+    name:{en:"MRI Scan", tl:"MRI Scan"},
+    also:{en:"Varies by body part", tl:"Depende sa bahagi"},
+    priv:[8000,25000], gov:[5000,12000], philhealth:null, conf:"med",
+    phNote:{en:"No PhilHealth for outpatient scans — covered only if you're admitted.",
+            tl:"Walang PhilHealth sa outpatient scan — covered lang kung naka-admit."},
+    excl:{en:"Contrast, the radiologist's reading fee, and sedation are extra.",
+          tl:"Dagdag ang contrast, reading fee ng radiologist, at sedation."}
+  },
+  {
+    id:"echo_ecg", emo:"🫀",
+    name:{en:"2D Echo / ECG", tl:"2D Echo / ECG"},
+    also:{en:"Heart tests", tl:"Test sa puso"},
+    priv:[2500,6500], gov:[1500,3000], philhealth:null, conf:"good",
+    phNote:{en:"No PhilHealth for outpatient tests — covered only if you're admitted.",
+            tl:"Walang PhilHealth sa outpatient test — covered lang kung naka-admit."},
+    excl:{en:"The cardiologist's reading fee and stress-test/Doppler add-ons are extra.",
+          tl:"Dagdag ang reading fee ng cardiologist at stress test/Doppler."}
+  }
+];
+
+const AID = [
+  { name:"Malasakit Centers (DOH)", link:"https://doh.gov.ph",
+    what:{en:"One-stop desk inside public hospitals that combines DOH, PhilHealth, PCSO & DSWD aid to cut your bill.",
+          tl:"One-stop desk sa pampublikong ospital na pinagsasama ang tulong ng DOH, PhilHealth, PCSO at DSWD para mabawasan ang bill."},
+    how:{en:"Go to the hospital's Malasakit Center (Mon–Fri). Bring a valid ID, the bill/statement, and a medical abstract.",
+         tl:"Pumunta sa Malasakit Center ng ospital (Lun–Biy). Dalhin ang valid ID, bill, at medical abstract."} },
+  { name:"PCSO Medical Assistance", link:"https://www.pcso.gov.ph",
+    what:{en:"Aid for hospital bills, dialysis, chemo, and medicines — often via a Guarantee Letter.",
+          tl:"Tulong para sa hospital bill, dialysis, chemo, at gamot — kadalasang Guarantee Letter."},
+    how:{en:"Apply at a PCSO branch or the hospital's PCSO desk. Bring ID, medical abstract, bill/quotation, and a barangay indigency cert.",
+         tl:"Mag-apply sa PCSO branch o PCSO desk sa ospital. Dalhin ang ID, medical abstract, bill, at barangay indigency."} },
+  { name:"DSWD AICS (Medical)", link:"https://aics.dswd.gov.ph",
+    what:{en:"Government aid for medical bills, medicines, and lab/procedures during a crisis.",
+          tl:"Tulong ng gobyerno para sa medical bill, gamot, at lab/procedure sa panahon ng krisis."},
+    how:{en:"Go to a DSWD office or Crisis Intervention Unit. Bring ID, barangay indigency, and a medical certificate (within 3 months) + bill.",
+         tl:"Pumunta sa DSWD office o Crisis Intervention Unit. Dalhin ang ID, barangay indigency, at medical certificate (loob ng 3 buwan) + bill."} },
+  { name:"Senator / Congressman Aid", link:"https://assist.senate.gov.ph",
+    what:{en:"Your senator's or representative's office can issue Guarantee Letters to government hospitals.",
+          tl:"Ang opisina ng senador o congressman mo ay pwedeng mag-isyu ng Guarantee Letter sa gov't hospital."},
+    how:{en:"Apply at the office or via Senate Assist online. Bring a request letter, medical certificate, cost quotation, and ID.",
+         tl:"Mag-apply sa opisina o sa Senate Assist online. Dalhin ang request letter, medical certificate, quotation, at ID."} },
+  { name:"LGU Assistance (City/Town)", link:null,
+    what:{en:"Local social-welfare aid (CSWDO/MSWDO) for medicines, bills, or procedures — rules vary by LGU.",
+          tl:"Lokal na tulong (CSWDO/MSWDO) para sa gamot, bill, o procedure — iba-iba bawat LGU."},
+    how:{en:"Go to the Social Welfare Office where you live. Bring barangay indigency, ID, and a medical cert + bill. Apply early.",
+         tl:"Pumunta sa Social Welfare Office ng lungsod/bayan mo. Dalhin ang barangay indigency, ID, at medical cert + bill. Mag-apply agad."} },
+  { name:"Hospital Charity / Social Service", link:null,
+    what:{en:"Public hospitals classify patients by income — Class C/D get big discounts or free care.",
+          tl:"Ina-classify ng pampublikong ospital ang pasyente ayon sa kita — malaking diskwento o libre ang Class C/D."},
+    how:{en:"Ask for the Medical Social Service / Social Work dept on admission. Bring ID and proof of income/indigency.",
+         tl:"Hingin ang Medical Social Service sa pag-admit. Dalhin ang ID at patunay ng kita/indigency."} },
+  { name:"PhilHealth Konsulta / YAKAP", link:"https://www.philhealth.gov.ph/yakap",
+    what:{en:"Free outpatient primary care: consults, lab tests, cancer screening, and medicines (up to ~₱20k/yr).",
+          tl:"Libreng outpatient primary care: consult, lab test, cancer screening, at gamot (hanggang ~₱20k/taon)."},
+    how:{en:"Register with an accredited YAKAP/Konsulta clinic (via the clinic or PhilHealth portal), then visit for free services.",
+         tl:"Mag-register sa accredited YAKAP/Konsulta clinic (sa clinic o PhilHealth portal), tapos bumisita para sa libreng serbisyo."} },
+  { name:"NGOs & Foundations", link:"https://www.philcancer.org.ph",
+    what:{en:"Charities like Philippine Cancer Society, ICanServe, and Tzu Chi help with specific illnesses (especially cancer).",
+          tl:"Mga charity tulad ng Philippine Cancer Society, ICanServe, at Tzu Chi para sa ilang sakit (lalo na cancer)."},
+    how:{en:"Apply directly to the NGO with a medical abstract and proof of need; many require gov't aid be used first.",
+         tl:"Mag-apply diretso sa NGO na may medical abstract at patunay ng pangangailangan; karamihan kailangan muna ang gov't aid."} }
+];
+
+const PHIL = { sections:[
+  { icon:"🪪", title:{en:"Are you covered?", tl:"Covered ka ba?"}, points:{
+    en:["Under the Universal Health Care law, every Filipino is automatically a PhilHealth member — even without paying.",
+        "But to claim, you usually must be ACTIVE: about 9 monthly contributions paid in the last 12 months.",
+        "Free coverage (no payment): seniors 60+, indigents, 4Ps, and PWDs — the government pays.",
+        "Living or working abroad? You must be paid-up to claim."],
+    tl:["Sa ilalim ng Universal Health Care, automatic na miyembro ng PhilHealth ang bawat Pilipino — kahit walang bayad.",
+        "Pero para mag-claim, kailangan ACTIVE: mga 9 buwang hulog sa nakaraang 12 buwan.",
+        "Libre (walang bayad): senior 60+, indigent, 4Ps, at PWD — sagot ng gobyerno.",
+        "Nasa abroad? Kailangang updated ang hulog para makaclaim."] } },
+  { icon:"🔎", title:{en:"Check your status", tl:"I-check ang status"}, points:{
+    en:["Log in at memberinquiry.philhealth.gov.ph (you'll need your 12-digit number).",
+        "Or call 24/7: (02) 8662-2588."],
+    tl:["Mag-login sa memberinquiry.philhealth.gov.ph (kailangan ang 12-digit number).",
+        "O tumawag 24/7: (02) 8662-2588."] } },
+  { icon:"🏥", title:{en:"Using it at the hospital", tl:"Paggamit sa ospital"}, points:{
+    en:["At any PhilHealth-accredited hospital, it's auto-deducted from your bill — no need to file it yourself.",
+        "Bring your PhilHealth ID/number plus a valid government ID."],
+    tl:["Sa PhilHealth-accredited na ospital, automatic na binabawas sa bill — di mo kailangang mag-file.",
+        "Dalhin ang PhilHealth ID/number at isang valid government ID."] } },
+  { icon:"⏳", title:{en:"If contributions lapsed", tl:"Kung lumipas ang hulog"}, points:{
+    en:["You can't pay back missed past years to make them count.",
+        "Update your record (PMRF) and start paying again — build active status BEFORE a planned procedure."],
+    tl:["Di pwedeng bayaran ang lumipas na taon para mabilang.",
+        "I-update ang record (PMRF) at magsimulang maghulog ulit — bumuo ng active status BAGO ang planadong procedure."] } },
+  { icon:"⚠️", title:{en:"Honest reminder", tl:"Tapat na paalala"}, points:{
+    en:["At private hospitals PhilHealth covers only a fixed amount — expect to still pay a lot.",
+        "At government hospitals, you'll usually pay far less."],
+    tl:["Sa pribadong ospital, fixed lang ang sagot ng PhilHealth — asahang malaki pa rin ang babayaran.",
+        "Sa pampublikong ospital, mas mababa ang babayaran."] } }
+]};
+
+/* ============================================================
+   i18n — UI chrome strings
+   ============================================================ */
+const STR = {
+  en:{
+    appName:"Magkano?", tagline:"Prepare for hospital costs · Philippines",
+    topNote:'<b>Estimates only.</b> Real prices change and vary by hospital — always call to confirm. This is free info, not medical advice.',
+    secProc:"Pick a procedure", soon:"More procedures coming soon.",
+    secHelp:"Need help?", aidT:"Help paying", aidS:"Free gov't assistance",
+    philT:"PhilHealth", philS:"Are you covered?",
+    reviewed:"Last reviewed: "+REVIEWED, footer:"Made to help — free, no sign-up, nothing saved. ❤️",
+    prepare:"Prepare roughly", atPrivate:"at a private hospital",
+    havePhil:"I have active PhilHealth", govLine:"At a government hospital it’s far cheaper",
+    philCovers:"PhilHealth may cover up to", youPay:"You may still pay about",
+    notIncl:"Often NOT included", askTitle:"What to ask when you call",
+    asks:[
+      "Is the price ALL-IN — doctor’s fee, facility, AND anesthesia?",
+      "Is biopsy / lab / pathology included or separate?",
+      "Do I need a consult first? How many days before?",
+      "How much deposit do I pay, and do you accept my card?",
+      "Are you PhilHealth-accredited?"
+    ],
+    bring:"Bring", bringList:"PhilHealth ID/number · a valid ID (passport ok) · any past records",
+    aidTitle:"Where to get help paying", philTitle:"PhilHealth basics",
+    disc:"Estimates only — not medical or financial advice. Always confirm costs and coverage with the hospital and PhilHealth. Figures from public sources; prices vary and change.",
+    confNote:{good:"Fairly reliable range",med:"Rough range — confirm",low:"Very rough — confirm"}
+  },
+  tl:{
+    appName:"Magkano?", tagline:"Ihanda ang gastos sa ospital · Pilipinas",
+    topNote:'<b>Tantya lang ito.</b> Nagbabago at iba-iba ang presyo bawat ospital — laging tumawag para kumpirmahin. Libreng impormasyon, hindi medical advice.',
+    secProc:"Pumili ng procedure", soon:"Marami pang procedure na darating.",
+    secHelp:"Kailangan ng tulong?", aidT:"Tulong pambayad", aidS:"Libreng tulong ng gobyerno",
+    philT:"PhilHealth", philS:"Covered ka ba?",
+    reviewed:"Huling review: "+REVIEWED, footer:"Gawa para tumulong — libre, walang sign-up, walang sinasave. ❤️",
+    prepare:"Maghanda ng tantyang", atPrivate:"sa pribadong ospital",
+    havePhil:"May active PhilHealth ako", govLine:"Sa pampublikong ospital, mas mura ito",
+    philCovers:"Maaaring sagutin ng PhilHealth hanggang", youPay:"Maaaring bayaran mo pa rin ang tantyang",
+    notIncl:"Madalas HINDI kasama", askTitle:"Itanong kapag tumawag",
+    asks:[
+      "ALL-IN ba ang presyo — doctor’s fee, facility, AT anesthesia?",
+      "Kasama ba ang biopsy / lab / pathology o hiwalay?",
+      "Kailangan ba ng consult muna? Ilang araw bago?",
+      "Magkano ang deposit, at tumatanggap ba kayo ng card ko?",
+      "PhilHealth-accredited ba kayo?"
+    ],
+    bring:"Dalhin", bringList:"PhilHealth ID/number · valid ID (pwede passport) · lumang records",
+    aidTitle:"Saan kumuha ng tulong pambayad", philTitle:"PhilHealth basics",
+    disc:"Tantya lang — hindi medical o financial advice. Laging kumpirmahin sa ospital at PhilHealth. Galing sa pampublikong sources; nagbabago ang presyo.",
+    confNote:{good:"Medyo maaasahang range",med:"Magaspang na range — kumpirmahin",low:"Napaka-rough — kumpirmahin"}
+  }
+};
+
+let LANG = "en";
+let phStateActive = false;
+
+const peso = n => "₱" + Math.round(n).toLocaleString("en-PH");
+const eur  = n => "€" + Math.round(n/FX).toLocaleString("en-PH");
+const t = () => STR[LANG];
+
+function setLang(l){
+  LANG = l;
+  document.documentElement.lang = l;
+  document.getElementById("lang-en").classList.toggle("on", l==="en");
+  document.getElementById("lang-tl").classList.toggle("on", l==="tl");
+  renderChrome();
+  renderGrid();
+  if(openSheetType) reopenSheet();
+}
+
+function renderChrome(){
+  const s = t();
+  const set = (id,val,html)=>{const e=document.getElementById(id); if(e){ html? e.innerHTML=val : e.textContent=val; }};
+  set("appName",s.appName); set("tagline",s.tagline);
+  set("topNote",s.topNote,true);
+  set("secProc",s.secProc); set("soonNote",s.soon); set("secHelp",s.secHelp);
+  set("aidT",s.aidT); set("aidS",s.aidS); set("philT",s.philT); set("philS",s.philS);
+  set("reviewedTxt",s.reviewed); set("footerTxt",s.footer);
+  document.getElementById("soonNote").style.display = PROCEDURES.length ? "block":"none";
+}
+
+function renderGrid(){
+  const g = document.getElementById("procGrid");
+  g.innerHTML = PROCEDURES.map((p,i)=>`
+    <button class="card" onclick="openProc(${i})">
+      <span class="emo">${p.emo}</span>
+      <span>
+        <span class="nm">${p.name[LANG]}</span>
+        <span class="also">${p.also[LANG]}</span>
+      </span>
+    </button>`).join("");
+}
+
+/* ---------------- sheet plumbing ---------------- */
+let openSheetType = null, openSheetArg = null;
+function showSheet(html){
+  document.getElementById("sheetContent").innerHTML = html;
+  document.getElementById("sheet").scrollTop = 0;
+  document.getElementById("scrim").classList.add("show");
+  document.getElementById("sheet").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeSheet(){
+  document.getElementById("scrim").classList.remove("show");
+  document.getElementById("sheet").classList.remove("show");
+  document.body.style.overflow="";
+  openSheetType=null;
+}
+function reopenSheet(){
+  if(openSheetType==="proc") renderProc(openSheetArg);
+  else if(openSheetType==="aid") renderAid();
+  else if(openSheetType==="phil") renderPhil();
+}
+function sheetHead(emo,title){
+  return `<div class="sheet-head"><span class="emo">${emo}</span><h3>${title}</h3>
+    <button class="x" onclick="closeSheet()" aria-label="close">${ic('x',15)}</button></div>`;
+}
+
+/* ---------------- procedure estimate ---------------- */
+function openProc(i){ openSheetType="proc"; openSheetArg=i; renderProc(i); }
+function renderProc(i){
+  const p = PROCEDURES[i], s = t();
+  const hasPH = typeof p.philhealth === "number";
+  const showPay = hasPH && phStateActive;
+  const cover = showPay ? Math.min(p.philhealth, p.priv[0]) : 0;
+  const pay = [Math.max(0,p.priv[0]-cover), Math.max(0,p.priv[1]-cover)];
+  const html = sheetHead(p.emo, p.name[LANG]) + `
+    <div class="big">
+      <div class="lbl">${s.prepare} · ${s.atPrivate}</div>
+      <div class="amt">${peso(p.priv[0])} – ${peso(p.priv[1])}</div>
+      <div class="eur">≈ ${eur(p.priv[0])} – ${eur(p.priv[1])} · ${s.confNote[p.conf]}</div>
+    </div>
+
+    ${hasPH ? `<div class="toggle" onclick="togglePhil()">
+      <span class="tx">🛡️ ${s.havePhil}</span>
+      <span class="sw ${phStateActive?'on':''}"></span>
+    </div>` : ``}
+
+    <div class="lines">
+      ${showPay ? `
+        <div class="li"><span class="ic">${ic('shield')}</span><span>${s.philCovers} <b>${peso(p.philhealth)}</b></span></div>
+        <div class="li outpay"><span class="ic">${ic('cash')}</span><span>${s.youPay} <b>${peso(pay[0])} – ${peso(pay[1])}</b></span></div>
+      ` : ``}
+      ${p.phNote ? `<div class="li"><span class="ic">${ic('shield')}</span><span>${p.phNote[LANG]}</span></div>` : ``}
+      <div class="li"><span class="ic">${ic('hospital')}</span><span>${s.govLine}: <b>${peso(p.gov[0])} – ${peso(p.gov[1])}</b></span></div>
+    </div>
+
+    <div class="lines"><div class="li"><span class="ic" style="color:var(--gold)">${ic('warning')}</span><span><b style="color:var(--gold)">${s.notIncl}:</b> ${p.excl[LANG]}</span></div></div>
+
+    <details class="qa" open>
+      <summary>${ic('chat')} ${s.askTitle}<span class="chev">${ic('chevron')}</span></summary>
+      <div class="body">${s.asks.map(a=>`<p>${a}</p>`).join("")}</div>
+    </details>
+
+    <div class="lines"><div class="li"><span class="ic">${ic('bag')}</span><span><b>${s.bring}:</b> ${s.bringList}</span></div></div>
+
+    <p class="disc">${s.disc}</p>`;
+  showSheet(html);
+}
+function togglePhil(){ phStateActive=!phStateActive; renderProc(openSheetArg); }
+
+/* ---------------- aid & philhealth ---------------- */
+function openAid(){ openSheetType="aid"; renderAid(); }
+function renderAid(){
+  const s=t();
+  const cards = AID.length ? AID.map(a=>`
+    <div class="aid-card">
+      <h4>${a.name}</h4>
+      <div class="what">${a.what[LANG]}</div>
+      <div class="how"><span class="ic">${ic('geo')}</span> ${a.how[LANG]}</div>
+      ${a.link?`<a href="${a.link}" target="_blank" rel="noopener">${a.link.replace(/^https?:\/\//,'')} ↗</a>`:''}
+    </div>`).join("") : `<div class="soon">Coming soon.</div>`;
+  showSheet(sheetHead(ic('cash',28), s.aidTitle) + cards + `<p class="disc">${s.disc}</p>`);
+}
+function openPhil(){ openSheetType="phil"; renderPhil(); }
+function renderPhil(){
+  const s=t();
+  const body = PHIL ? PHIL.sections.map(sec=>`
+    <details class="qa" open><summary>${sec.icon} ${sec.title[LANG]}<span class="chev">${ic('chevron')}</span></summary>
+      <div class="body">${sec.points[LANG].map(p=>`<p>${p}</p>`).join("")}</div></details>`).join("")
+    : `<div class="soon">Coming soon.</div>`;
+  showSheet(sheetHead(ic('shield',28), s.philTitle) + body + `<p class="disc">${s.disc}</p>`);
+}
+
+/* ---------------- init ---------------- */
+renderChrome(); renderGrid();
+if("serviceWorker" in navigator){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
+</script>
+</body>
+</html>
