@@ -1,4 +1,4 @@
-# Magkano? — PH Hospital Cost Guide
+# Gastimate — PH Hospital Cost Guide
 
 A free, no-sign-up **PWA** that tells Filipinos roughly **how much to prepare** for common
 hospital procedures, how much **PhilHealth** may cover, and **where to get help paying**.

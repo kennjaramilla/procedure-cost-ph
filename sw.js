@@ -1,7 +1,7 @@
-/* Magkano? service worker — offline support.
+/* Gastimate service worker — offline support.
    Network-first for the page (so info stays fresh online),
    cache-first for static assets (icons/manifest). */
-const CACHE = "magkano-v1";
+const CACHE = "gastimate-v1";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png"];
 

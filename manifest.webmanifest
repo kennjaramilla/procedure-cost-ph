@@ -1,6 +1,6 @@
 {
-  "name": "Magkano? — PH Hospital Cost Guide",
-  "short_name": "Magkano?",
+  "name": "Gastimate — PH Hospital Cost Guide",
+  "short_name": "Gastimate",
   "description": "Free guide to how much to prepare for hospital procedures in the Philippines, with PhilHealth and where to get help paying. Estimates only.",
   "start_url": "./",
   "scope": "./",
