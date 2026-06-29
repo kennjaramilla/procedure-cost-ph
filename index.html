@@ -55,6 +55,9 @@
   h2.sec{font-family:var(--sans);font-size:12px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);
     font-weight:700;margin:26px 4px 13px;display:flex;align-items:center;gap:11px}
   h2.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+  .search{width:100%;margin:0 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:13px;
+    font-family:inherit;font-size:15px;background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+  .search:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,122,111,.15)}
 
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;
@@ -154,6 +157,16 @@
   .disc{font-size:11.5px;color:var(--muted);line-height:1.55;margin-top:16px;padding:0 2px;text-align:center}
   .soon{font-size:12.5px;color:var(--muted);text-align:center;padding:16px;background:#fff;border:1px dashed var(--line);border-radius:14px;margin-top:11px;line-height:1.5}
   .subnote{font-size:12px;color:var(--muted);line-height:1.5;margin:11px 2px 2px}
+  .sharebar{width:100%;margin-top:18px;background:var(--teal);color:#fff;border-radius:16px;padding:15px 16px;
+    display:flex;align-items:center;justify-content:center;gap:10px;font-weight:700;font-size:14.5px;
+    box-shadow:var(--shadow);line-height:1.3;text-align:center}
+  .sharebar:active{transform:scale(.99)}
+  .sharebar .sub{font-weight:500;opacity:.9}
+  .bigbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:12px;
+    padding:15px;border-radius:13px;font-weight:700;font-size:15px;text-decoration:none;box-shadow:var(--shadow);border:none}
+  .bigbtn.fb{background:#1877F2;color:#fff}
+  .bigbtn.msgr{background:#0A7CFF;color:#fff}
+  .bigbtn.copy{background:#fff;color:var(--ink);border:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -186,10 +199,13 @@
   </div>
 
   <h2 class="sec" id="secProc">Pick a procedure</h2>
+  <input id="procSearch" class="search" type="search" oninput="renderGrid()" autocomplete="off">
   <div class="grid" id="procGrid"></div>
 
   <h2 class="sec" id="secHelp">Need help?</h2>
   <div class="help-row" id="helpRow"></div>
+
+  <button class="sharebar" id="shareBtn" onclick="shareApp()"></button>
 
   <p class="reviewed" id="reviewedTxt"></p>
   <footer id="footerTxt"></footer>
@@ -217,6 +233,11 @@ const TINTS = ["#E4F0ED","#FBEAE4","#FBF1DA","#E9F0F6","#EFEAF6","#E7F1E8"];
 const ICONS = {
   x:'<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>',
   chevron:'<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>',
+  share:'<path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"/>',
+  facebook:'<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>',
+  messenger:'<path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.64.64 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.64.64 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76m5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>',
+  link:'<path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>',
+  check:'<path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>',
   cash:'<path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/><path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/><path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/><path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>',
   shield:'<path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/><path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>',
   hospital:'<path d="M8.5 5.034v1.1l.953-.55.5.867L9 7l.953.55-.5.866-.953-.55v1.1h-1v-1.1l-.953.55-.5-.866L7 7l-.953-.55.5-.866.953.55v-1.1zM13.25 9a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-.5a.25.25 0 0 0-.25-.25zM13 11.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25zm.25 1.75a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-.5a.25.25 0 0 0-.25-.25zm-11-4a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5A.25.25 0 0 0 3 9.75v-.5A.25.25 0 0 0 2.75 9zm0 2a.25.25 0 0 0-.25.25v.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-.5a.25.25 0 0 0-.25-.25zM2 13.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25z"/><path d="M5 1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1zm2 14h2v-3H7zm3 0h1V3H5v12h1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1zm0-14H6v1h4zm2 7v7h3V8zm-8 7V8H1v7z"/>',
@@ -263,7 +284,53 @@ const PROCEDURES = [
   { id:"echo_ecg", emo:"🫀", name:{en:"2D Echo / ECG", tl:"2D Echo / ECG"}, also:{en:"Heart tests", tl:"Test sa puso"},
     priv:[2500,6500], gov:[1500,3000], philhealth:null, conf:"good",
     phNote:{en:"No PhilHealth for outpatient tests — covered only if you're admitted.", tl:"Walang PhilHealth sa outpatient test — covered lang kung naka-admit."},
-    excl:{en:"The cardiologist's reading fee and stress-test/Doppler add-ons are extra.", tl:"Dagdag ang reading fee ng cardiologist at stress test/Doppler."} }
+    excl:{en:"The cardiologist's reading fee and stress-test/Doppler add-ons are extra.", tl:"Dagdag ang reading fee ng cardiologist at stress test/Doppler."} },
+  { id:"gallbladder", emo:"🔪", name:{en:"Gallbladder Removal", tl:"Pagtanggal ng Apdo"}, also:{en:"Laparoscopic", tl:"Laparoscopic"},
+    priv:[70000,150000], gov:[25000,60000], philhealth:60450, conf:"med",
+    excl:{en:"Pre-op labs/ultrasound, take-home meds, and overstay/complications are extra.", tl:"Dagdag ang pre-op labs/ultrasound, take-home gamot, at overstay/komplikasyon."} },
+  { id:"hernia", emo:"🪡", name:{en:"Hernia Repair", tl:"Operasyon sa Hernia"}, also:{en:"Herniorrhaphy", tl:"Herniorrhaphy"},
+    priv:[25000,100000], gov:[10000,30000], philhealth:40950, conf:"med",
+    excl:{en:"Mesh and pre-op workup are extra; bilateral/recurrent cases bill separately.", tl:"Dagdag ang mesh at pre-op workup; hiwalay ang bilateral/recurrent."} },
+  { id:"hemorrhoid", emo:"🚽", name:{en:"Hemorrhoid Surgery", tl:"Operasyon sa Almoranas"}, also:{en:"Hemorrhoidectomy", tl:"Hemorrhoidectomy"},
+    priv:[35000,120000], gov:[15000,25000], philhealth:23634, conf:"med",
+    excl:{en:"Pre-op labs and take-home meds are extra; clinic banding isn't covered.", tl:"Dagdag ang pre-op labs at gamot; di covered ang clinic banding."} },
+  { id:"tonsil", emo:"👄", name:{en:"Tonsil Removal", tl:"Pagtanggal ng Tonsil"}, also:{en:"Tonsillectomy", tl:"Tonsillectomy"},
+    priv:[40000,110000], gov:[3000,20000], philhealth:35100, conf:"med",
+    excl:{en:"Pre-op labs, ENT fee above the case rate, meds, and room upgrade are extra.", tl:"Dagdag ang pre-op labs, ENT fee, gamot, at room upgrade."} },
+  { id:"xray", emo:"🩻", name:{en:"Chest X-ray", tl:"Chest X-ray"}, also:{en:"X-ray", tl:"X-ray"},
+    priv:[300,1500], gov:[150,400], philhealth:null, conf:"good",
+    phNote:{en:"No PhilHealth for an outpatient X-ray — covered only if you're admitted.", tl:"Walang PhilHealth sa outpatient X-ray — covered lang kung naka-admit."},
+    excl:{en:"A consult to discuss results, extra views, and copies cost extra.", tl:"Dagdag ang consult, dagdag na views, at kopya."} },
+  { id:"ultrasound", emo:"📡", name:{en:"Ultrasound", tl:"Ultrasound"}, also:{en:"Abdominal · pelvic · OB", tl:"Abdominal · pelvic · OB"},
+    priv:[800,3500], gov:[300,800], philhealth:null, conf:"good",
+    phNote:{en:"No PhilHealth for an outpatient ultrasound — covered only if you're admitted.", tl:"Walang PhilHealth sa outpatient ultrasound — covered lang kung naka-admit."},
+    excl:{en:"Interpretation fee, printed images/copies, and the consult are extra.", tl:"Dagdag ang interpretation fee, kopya ng images, at consult."} },
+  { id:"bloodtests", emo:"🧪", name:{en:"Blood Tests", tl:"Blood Test"}, also:{en:"CBC + chem panel", tl:"CBC + chem panel"},
+    priv:[1500,5000], gov:[800,3000], philhealth:null, conf:"good",
+    phNote:{en:"Routine outpatient labs aren't covered — only if admitted or via Konsulta/YAKAP.", tl:"Di covered ang routine outpatient labs — kung naka-admit o via Konsulta/YAKAP lang."},
+    excl:{en:"Doctor consult, home-service fee, rush fees, and special panels are extra.", tl:"Dagdag ang consult, home-service, rush fee, at special panels."} },
+  { id:"tooth", emo:"🦷", name:{en:"Tooth Extraction", tl:"Pabunot ng Ngipin"}, also:{en:"Per tooth (simple)", tl:"Bawat ngipin"},
+    priv:[500,3000], gov:[0,1000], philhealth:null, conf:"good",
+    phNote:{en:"Elective extraction isn't covered; emergency extraction has a small benefit.", tl:"Di covered ang elective; may maliit na benepisyo ang emergency extraction."},
+    excl:{en:"Dental X-ray, antibiotics, and sedation/anesthesia are extra.", tl:"Dagdag ang dental X-ray, antibiotics, at sedation/anesthesia."} },
+  { id:"tuli", emo:"✂️", name:{en:"Circumcision (Tuli)", tl:"Tuli"}, also:{en:"Circumcision", tl:"Pagtutuli"},
+    priv:[500,20000], gov:[0,1500], philhealth:null, conf:"good",
+    phNote:{en:"Elective tuli isn't covered — but it's often FREE during LGU 'Libreng Tuli' programs.", tl:"Di covered ang elective tuli — pero madalas LIBRE sa 'Libreng Tuli' ng LGU."},
+    excl:{en:"Method matters: dorsal slit is cheapest, laser priciest; meds/labs extra.", tl:"Depende sa paraan: dorsal slit pinakamura, laser pinakamahal; dagdag ang gamot/labs."} },
+  { id:"chemo", emo:"🎗️", name:{en:"Chemotherapy", tl:"Chemotherapy"}, also:{en:"Per cycle", tl:"Bawat cycle"},
+    priv:[20000,120000], gov:[3000,30000], philhealth:null, conf:"med",
+    phNote:{en:"No per-cycle case rate; PhilHealth's Z-Benefit covers up to ~₱1.4M (e.g. breast cancer) at contracted centers.", tl:"Walang per-cycle case rate; sinasagot ng Z-Benefit hanggang ~₱1.4M (hal. breast cancer) sa contracted centers."},
+    excl:{en:"Varies hugely by drug — medicines are the biggest cost. Scans, labs & doctor fees extra.", tl:"Iba-iba depende sa gamot — ang gamot ang pinakamalaki. Dagdag ang scans, labs at doctor fee."} },
+  { id:"prenatal", emo:"🤰", name:{en:"Prenatal Check-up", tl:"Prenatal Check-up"}, also:{en:"Per visit", tl:"Bawat bisita"},
+    priv:[500,2000], gov:[0,500], philhealth:null, conf:"good",
+    phNote:{en:"Bundled in PhilHealth's maternity package (prenatal + delivery), not per visit. Free at RHUs.", tl:"Nasa maternity package ng PhilHealth (prenatal + panganganak), hindi per bisita. Libre sa RHU."},
+    excl:{en:"Ultrasound and special labs are separate; vitamins not included.", tl:"Hiwalay ang ultrasound at special labs; di kasama ang bitamina."} },
+  { id:"dengue", emo:"🦟", name:{en:"Dengue Confinement", tl:"Dengue (Confinement)"}, also:{en:"Hospital admission", tl:"Pag-admit"},
+    priv:[15000,120000], gov:[3000,20000], philhealth:19500, conf:"med",
+    excl:{en:"Severe dengue is covered higher (~₱47,000). Balance billing, room upgrade & meds extra.", tl:"Mas mataas ang sagot sa severe dengue (~₱47,000). Dagdag ang balance billing, room upgrade at gamot."} },
+  { id:"pneumonia", emo:"🫁", name:{en:"Pneumonia Confinement", tl:"Pneumonia (Confinement)"}, also:{en:"Hospital admission", tl:"Pag-admit"},
+    priv:[36000,150000], gov:[10000,40000], philhealth:29500, conf:"med",
+    excl:{en:"High-risk cases cost much more. Balance billing, room upgrade & take-home meds extra.", tl:"Mas mahal ang high-risk. Dagdag ang balance billing, room upgrade at gamot."} }
 ];
 
 const AID = [
@@ -371,9 +438,10 @@ const STR = {
     heroH:"Know what to prepare — before you go to the hospital.",
     heroP:"Free estimates for common procedures, what PhilHealth covers, and where to get help paying.",
     topNote:'<b>Estimates only.</b> Real prices change and vary by hospital — always call to confirm. This is free info, not medical advice.',
-    secProc:"Pick a procedure", secHelp:"Need help?",
+    secProc:"Pick a procedure", secHelp:"Need help?", searchPH:"Search a procedure…", noMatch:"No match — try another word.",
     aidT:"Help paying", aidS:"Free gov't aid", philT:"PhilHealth", philS:"Are you covered?",
     hospT:"Hospitals", hospS:"Find & call", shareT:"Share a price", shareS:"Help others",
+    shareBar:"Share Gastimate", shareBarSub:"tell someone who needs it", shareText:"Gastimate — free guide to PH hospital costs, what PhilHealth covers & where to get help paying. 🇵🇭", shareTitleApp:"Share Gastimate", onFb:"Share on Facebook", onMsgr:"Send on Messenger", copyLink:"Copy link", copied:"Link copied!",
     reviewed:"Last reviewed: "+REVIEWED, footer:"Made to help — free, no sign-up, nothing saved. ❤️",
     prepare:"Prepare roughly", atPrivate:"at a private hospital",
     havePhil:"I have active PhilHealth", govLine:"At a government hospital it’s far cheaper",
@@ -397,9 +465,10 @@ const STR = {
     heroH:"Alamin kung magkano ang ihahanda — bago pumunta sa ospital.",
     heroP:"Libreng tantya para sa karaniwang procedure, sagot ng PhilHealth, at saan kumuha ng tulong.",
     topNote:'<b>Tantya lang ito.</b> Nagbabago at iba-iba ang presyo bawat ospital — laging tumawag para kumpirmahin. Libreng impormasyon, hindi medical advice.',
-    secProc:"Pumili ng procedure", secHelp:"Kailangan ng tulong?",
+    secProc:"Pumili ng procedure", secHelp:"Kailangan ng tulong?", searchPH:"Maghanap ng procedure…", noMatch:"Walang tugma — subukan ang ibang salita.",
     aidT:"Tulong pambayad", aidS:"Libreng tulong", philT:"PhilHealth", philS:"Covered ka ba?",
     hospT:"Mga ospital", hospS:"Hanap at tawag", shareT:"Mag-share ng presyo", shareS:"Tumulong",
+    shareBar:"I-share ang Gastimate", shareBarSub:"sabihan ang nangangailangan", shareText:"Gastimate — libreng gabay sa gastos sa ospital, sagot ng PhilHealth at saan kumuha ng tulong. 🇵🇭", shareTitleApp:"I-share ang Gastimate", onFb:"I-share sa Facebook", onMsgr:"Ipadala sa Messenger", copyLink:"Kopyahin ang link", copied:"Nakopya ang link!",
     reviewed:"Huling review: "+REVIEWED, footer:"Gawa para tumulong — libre, walang sign-up, walang sinasave. ❤️",
     prepare:"Maghanda ng tantyang", atPrivate:"sa pribadong ospital",
     havePhil:"May active PhilHealth ako", govLine:"Sa pampublikong ospital, mas mura ito",
@@ -437,13 +506,20 @@ function renderChrome(){
   set("appName",s.appName); set("tagline",s.tagline); set("heroH",s.heroH); set("heroP",s.heroP);
   set("topNote",s.topNote,true); set("secProc",s.secProc); set("secHelp",s.secHelp);
   set("reviewedTxt",s.reviewed); set("footerTxt",s.footer);
+  const sb=document.getElementById("shareBtn");
+  if(sb) sb.innerHTML = ic('share',17)+`<span><b>${s.shareBar}</b> <span class="sub">· ${s.shareBarSub}</span></span>`;
+  const se=document.getElementById("procSearch"); if(se) se.placeholder=s.searchPH;
 }
 function renderGrid(){
-  document.getElementById("procGrid").innerHTML = PROCEDURES.map((p,i)=>`
+  const q=((document.getElementById("procSearch")||{}).value||"").toLowerCase().trim();
+  const cards = PROCEDURES.map((p,i)=>({p,i}))
+    .filter(({p})=> !q || (p.name.en+" "+p.name[LANG]+" "+p.also[LANG]).toLowerCase().includes(q))
+    .map(({p,i})=>`
     <button class="card" onclick="openProc(${i})">
       <span class="chip" style="background:${TINTS[i%TINTS.length]}">${p.emo}</span>
       <span><span class="nm">${p.name[LANG]}</span><span class="also">${p.also[LANG]}</span></span>
     </button>`).join("");
+  document.getElementById("procGrid").innerHTML = cards || `<div class="soon" style="grid-column:1/-1">${t().noMatch}</div>`;
 }
 function renderHelp(){
   const s=t();
@@ -474,6 +550,7 @@ function reopenSheet(){
   else if(openSheetType==="phil") renderPhil();
   else if(openSheetType==="hosp") renderHosp();
   else if(openSheetType==="share") renderShare();
+  else if(openSheetType==="shareapp") renderShareApp();
 }
 function sheetHead(emo,title){
   return `<div class="sheet-head"><span class="emo">${emo}</span><h3>${title}</h3>
@@ -485,8 +562,8 @@ function openProc(i){ openSheetType="proc"; openSheetArg=i; renderProc(i); }
 function renderProc(i){
   const p=PROCEDURES[i], s=t();
   const hasPH=typeof p.philhealth==="number", showPay=hasPH&&phStateActive;
-  const cover=showPay?Math.min(p.philhealth,p.priv[0]):0;
-  const pay=[Math.max(0,p.priv[0]-cover),Math.max(0,p.priv[1]-cover)];
+  const ph=showPay?p.philhealth:0;
+  const pay=[Math.max(0,p.priv[0]-ph),Math.max(0,p.priv[1]-ph)];
   showSheet(sheetHead(p.emo, p.name[LANG]) + `
     <div class="big">
       <div class="lbl">${s.prepare} · ${s.atPrivate}</div>
@@ -574,6 +651,25 @@ function submitPrice(ev){
     console.log("crowdsource submission (not wired):", data);
     showSheet(sheetHead(ic('chat',26), t().shareTitle)+`<div class="okmsg">${t().notWired}</div>`);
   }
+}
+
+/* ---- share the app (distribution) ---- */
+function shareApp(){
+  const s=t();
+  if(navigator.share){ navigator.share({title:"Gastimate", text:s.shareText, url:location.href}).catch(()=>{}); return; }
+  openSheetType="shareapp"; renderShareApp();
+}
+function renderShareApp(){
+  const s=t(), url=encodeURIComponent(location.href);
+  showSheet(sheetHead(ic('share',26), s.shareTitleApp) + `
+    <p class="subnote">${s.shareText}</p>
+    <a class="bigbtn fb" href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" rel="noopener">${ic('facebook',18)} ${s.onFb}</a>
+    <a class="bigbtn msgr" href="fb-messenger://share?link=${url}">${ic('messenger',18)} ${s.onMsgr}</a>
+    <button class="bigbtn copy" onclick="copyLink(this)">${ic('link',18)} <span>${s.copyLink}</span></button>`);
+}
+function copyLink(btn){
+  const s=t();
+  navigator.clipboard.writeText(location.href).then(()=>{ btn.innerHTML = ic('check',18)+` <span>${s.copied}</span>`; }).catch(()=>{});
 }
 
 /* ---- live FX (the one thing we can auto-update) ---- */
